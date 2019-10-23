@@ -1,0 +1,201 @@
+AssignmentID: PROG5
+
+SUBMISSIONS:  
+              PROG5:   academics.cpp   
+
+
+SOLUTION KEY: key-academics.run (Secure shell)
+              key-academics.crun (for Codio)
+
+
+DESCRIPTION:  (1) Write a program to read and format data for FOUR students.
+
+              (2) Flag the academic status of each student:
+                  ON PROBATION  -- when GPA < 2.0
+                  HONORS        -- when GPA >= 3.0
+                  GOOD STANDING -- when neither honors nor probation.
+
+              (3) Compute the arithmetic and weighted average GPA of the 
+                  three students.
+
+
+
+INPUTS:       (1) Input file: students.dat.
+
+              (2) All the data for a student are on the same input line:
+
+                    ID Firstname Lastname CumHours GPA
+
+                   Example:  
+                     143841138 Edward Jones 112 2.52
+                          411384112     Miser Frugal 67   1.99
+                     118113428 Marilyn Sapp 31 3.828
+                        943448138   Guess Who  112   2.23 
+                         813384212 Need Mercy 67 1.79
+                              718116428 Flying High 31            3.57
+
+
+OUTPUTS:     
+
+     (1) Output files: by standing: honors.dat, good_standing.dat, at_risk.dat
+
+                       One student record per line:
+                               ID Firstname Lastname CumHours GPA
+
+                    ID Firstname Lastname CumHours GPA
+
+     (2) The program must terminate (exit(1);)and print the following
+          message if the input file can not be opened:
+
+             FATAL ERROR: can not OPEN file 'students.dat'.
+
+ 
+     (3) A formatted report is displayed on the screen (sample shown below).
+
+
+         ACADMEMIC STANDINGS REPORT
+           
+         ====  =========  =====   ================  ==================
+          GPA  StudentID  Hours   Student_Name      Academic Standing
+         ====  =========  =====   ================  ==================
+         2.52  143841138    112   Jones, Edward     GOOD STANDING     
+         1.99  411384112     67   Frugal, Miser     AT RISK
+         3.83  118113428     31   Sapp, Marilyn     HONORS            
+         2.23  943448138    112   Who, Guess        GOOD STANDING     
+         ====  =========  =====   ================  ==================
+
+         2.642 = Average Student GPA
+
+         1.990 = Average At Risk GPA
+
+         2.375 = Average Good Standing GPA
+
+         3.828 = Average Honors GPA
+
+
+           4 STUDENTS
+              1 AT RISK
+              2 IN GOOD STANDING
+              1 HONORS
+
+
+
+
+PROBLEM ANALYSIS: (Schematic)
+
+                            +--------------+
+          Long Student_ID*  |              |    float GPA*
+                   -------->|   program    |-------------->
+                            |              |  
+          string FirstName* | academics    |    long Student_ID*
+                   -------->|              |-------------->
+                            |              |
+          string LastName*  |              |    int CumHours*
+                   -------->|              |--------------> 
+                            |              |
+          int CumHours*     |              |    string LastName*
+                   -------->|              |--------------> 
+                            |              |    string FirstName*
+          float GPA*        |              |
+                   -------->|              |--------------> 
+                            |              |    float avgGPA, avgGPA_honors
+                            |              |    float avgGPA_goodstanding
+                            |              |    float avgGPA_atrisk 
+                            |              |
+                            |              |-------------->  
+                            |              |    int student_Count, 
+                            |              |        honors_Count
+                            |              |        good_Count
+                            |              |        atrisk_Count
+                            +--------------+
+    
+
+   * These variables are used for each student. 
+
+======================================================================
+ALGORITHM:
+
+  -----------------------------------------------------------
+  NOTE: The following steps 1-4 are the start-up phase.
+  -----------------------------------------------------------
+
+
+  1. Open input file.
+     1.1 If the input file can not be opened, 
+         print termination message and terminate program.
+
+  2. Open the output files.
+
+  3. Set all the counts and sums to ZERO.
+
+  4. Display ACADEMIC STANDING REPORT headings. 
+
+  -----------------------------------------------------------
+  NOTE: The following steps 5-9 must be repeated 4 times.
+  -----------------------------------------------------------
+
+  5. Read input data for one student from input file. 
+
+  6. Write student data to the Standing Report.
+
+  7. Increment the overall number of students.
+
+  8. Add the GPA to the overall GPA sum.
+
+  9. Determine the academic standing of student, and based on
+     classification:  
+     9.1 Write student data to required output file
+     9.2 Count the student for the classification (honors, 
+         at-risk, good-standing)
+     9.3 Add the GPA to sum for the classification
+
+
+  -----------------------------------------------------------
+  NOTE: The following steps 10-14 complete the process.
+  -----------------------------------------------------------
+
+ 10. Display Standing Report Footer.
+
+ 11. Calculate the average GPA for each classification: ZERO
+     if no students in the classification.
+
+ 12. Write to Standing Report the overall average GPA, then avg 
+     GPA for at-risk, good-standing, and honors.
+
+ 13. Write to Standing Report the count of students: overall, 
+     at-risk, good-standing, honors.
+
+ 14. Close input and output files. 
+
+======================================================================
+
+
+OUTPUT LAYOUT ANALYSIS
+
+  data 
+  type        float    long     int   int      string             string
+  precision   2        -       -     -          -                   -
+  align       R        R       R     R          L                   L
+  width       4        9       4     5         16                   18
+             ----  ---------  -----   ----------------  ------------------
+             |  |  |       |  |   |   |              |  |                | 
+             1111bb222222222bb44444bbb5555..........55bb666666.........666
+             ====  =========  =====   ================  ==================
+              GPA  StudentID  Hours   Student_Name      Academic Standing
+             ====  =========  =====   ================  ==================
+             2.52  143841138    112   Jones, Edward     GOOD STANDING
+             1.99  411384112     67   Frugal, Miser     AT RISK
+             3.83  118113428     31   Sapp, Marilyn     HONORS
+             ====  =========  =====   ================  ==================
+
+
+
+             string                 float   data type
+             -                        3     precision
+             left                   right   justification
+             ---------- 23 ---------- 5 -   field width
+             |                     |    |
+             x.xxx 
+             2.779 = Average Student GPA
+
+
